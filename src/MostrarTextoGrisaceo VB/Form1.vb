@@ -208,12 +208,27 @@ Public Class Form1
     ''' Por ejemplo si el texto grisáceo es Buscar... y
     ''' se empezó a escribir en medio del texto (o en cualquier parte)
     ''' BuscarL... se quitará Buscar... y se dejará L.
+    ''' Antes de hacer cambios se comprueba si el texto predeterminado está al completo 
+    ''' en el texto en el que se hará el cambio.
     ''' </summary>
     ''' <param name="texto">El texto en el que se hará la sustitución.</param>
     ''' <param name="predeterminado">El texto a quitar.</param>
     ''' <returns>Una cadena con el texto predeterminado quitado.</returns>
-    ''' <remarks>18/Oct/2020</remarks>
-    Private Function QuitarPredeterminado(texto As String, predeterminado As String) As String
+    ''' <remarks>18/Oct/2020 actualizado 24/Oct/2020</remarks>
+    Public Function QuitarPredeterminado(texto As String, predeterminado As String) As String
+        Dim cuantos = predeterminado.Length
+        Dim k = 0
+
+        For i = 0 To predeterminado.Length - 1
+            Dim j = texto.IndexOf(predeterminado(i))
+            If j = -1 Then Continue For
+            k += 1
+        Next
+        ' si k es distinto de cuantos es que no están todos lo caracteres a quitar
+        If k <> cuantos Then
+            Return texto
+        End If
+
         For i = 0 To predeterminado.Length - 1
             Dim j = texto.IndexOf(predeterminado(i))
             If j = -1 Then Continue For
@@ -223,6 +238,7 @@ Public Class Form1
                 texto = texto.Substring(0, j) & texto.Substring(j + 1)
             End If
         Next
+
         Return texto
     End Function
 

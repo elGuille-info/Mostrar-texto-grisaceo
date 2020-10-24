@@ -210,13 +210,29 @@ public partial class Form1 : Form
     /// Por ejemplo si el texto grisáceo es Buscar... y
     /// se empezó a escribir en medio del texto (o en cualquier parte)
     /// BuscarL... se quitará Buscar... y se dejará L.
+    /// Antes de hacer cambios se comprueba si el texto predeterminado está al completo 
+    /// en el texto en el que se hará el cambio.
     /// </summary>
     /// <param name="texto">El texto en el que se hará la sustitución.</param>
     /// <param name="predeterminado">El texto a quitar.</param>
     /// <returns>Una cadena con el texto predeterminado quitado.</returns>
-    /// <remarks>18/Oct/2020</remarks>
+    /// <remarks>18/Oct/2020 actualizado 24/Oct/2020</remarks>
     private string QuitarPredeterminado(string texto, string predeterminado)
     {
+        var cuantos = predeterminado.Length;
+        var k = 0;
+
+        for (var i = 0; i < predeterminado.Length; i++)
+        {
+            var j = texto.IndexOf(predeterminado[i]);
+            if (j == -1)
+                continue;
+            k += 1;
+        }
+        // si k es distinto de cuantos es que no están todos lo caracteres a quitar
+        if (k != cuantos)
+            return texto;
+
         for (var i = 0; i < predeterminado.Length; i++)
         {
             var j = texto.IndexOf(predeterminado[i]);
